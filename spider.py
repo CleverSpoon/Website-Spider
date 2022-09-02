@@ -5,7 +5,7 @@ import re
 import urlparse
 
 
-target_url = "http://www.controltechnology.co.za/"
+target_url = "http://zaproxy.org/"
 target_links = []
 
 
