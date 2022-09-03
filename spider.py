@@ -3,32 +3,17 @@
 import requests
 import re
 import urlparse
+import linkdiscovery
+
+target_url = "http://192.168.188.203/dvwa/"
+links_to_ignore = ["http://192.168.188.203/dvwa/logout.php"]
+data_dict = {"username": "admin", "password": "password", "Login": "submit"}
+
+spider = linkdiscovery.LinkDiscovery(target_url, links_to_ignore)
+spider.session.post("http://192.168.188.203/dvwa/login.php", data=data_dict)
+spider.crawl()
 
 
-target_url = "http://zaproxy.org/"
-target_links = []
 
 
-def extract_links_from(url):
-    response = requests.get(url)
-    return re.findall('(?:href=")(.*?)"', response.content)
-
-
-def crawl(url):
-    href_links = extract_links_from(url)
-    for link in href_links:
-        link = urlparse.urljoin(url, link)
-
-        if "#" in link:
-            link = link.split("#")[0]
-        # if "mailto:?body=" in link:
-        #     link = link.split("mailto:?body=")[1]
-
-        if url in link and link not in target_links:
-            target_links.append(link)
-            print(link)
-            crawl(link)
-
-
-crawl(target_url)
 
